@@ -10,24 +10,38 @@ import UIKit
 
 class NewsViewController: UIViewController {
     
+    var newsLabelText: String = "News"
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view.
+        
         addLabel()
+        addCloseButton()
     }
     
     private func addLabel() {
-        let label = UILabel()
-        label.text = "News"
+        let newsLabel = UILabel()
+        newsLabel.text = newsLabelText
         
-        view.addSubview(label)
+        view.addSubview(newsLabel)
         view.backgroundColor = .white
         
-        label.translatesAutoresizingMaskIntoConstraints = false
+        newsLabel.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            label.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            label.centerYAnchor.constraint(equalTo: view.centerYAnchor)
+            newsLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            newsLabel.centerYAnchor.constraint(equalTo: view.centerYAnchor)
             ])
     }
     
+    private func addCloseButton() {
+        let closeButton = UIBarButtonItem(title: "Close",
+                                          style: UIBarButtonItem.Style.plain,
+                                          target: self,
+                                          action: #selector(closeViewController))
+        navigationItem.leftBarButtonItem = closeButton
+    }
+    
+    @objc private func closeViewController() {
+        dismiss(animated: true, completion: nil)
+    }
 }

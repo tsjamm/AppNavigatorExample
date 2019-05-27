@@ -10,9 +10,15 @@ import UIKit
 
 class HomeViewController: UIViewController {
 
+    var appNavigator = AppNavigator()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view.
+        
+        appNavigator.navigationController = navigationController
+        
+        addProfileButton()
+        addNewsButton()
         addLabel()
     }
     
@@ -28,6 +34,32 @@ class HomeViewController: UIViewController {
             label.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             label.centerYAnchor.constraint(equalTo: view.centerYAnchor)
             ])
+    }
+    
+    private func addProfileButton() {
+        let profileButton = UIBarButtonItem(title: "Profile",
+                                          style: UIBarButtonItem.Style.plain,
+                                          target: self,
+                                          action: #selector(openProfile))
+        navigationItem.rightBarButtonItem = profileButton
+    }
+    
+    private func addNewsButton() {
+        let newsButton = UIBarButtonItem(title: "News",
+                                         style: UIBarButtonItem.Style.plain,
+                                         target: self,
+                                         action: #selector(openNews))
+        navigationItem.leftBarButtonItem = newsButton
+    }
+    
+    @objc private func openProfile() {
+        appNavigator.navigate(to: .profile)
+    }
+    
+    @objc private func openNews() {
+        if let newsViewController = appNavigator.navigate(to: .news) as? NewsViewController {
+            newsViewController.newsLabelText = "News - Opened from Home"
+        }
     }
     
 }

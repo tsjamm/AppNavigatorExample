@@ -8,14 +8,14 @@
 
 import UIKit
 
-fileprivate protocol NavigatorDestination {
+protocol NavigatorDestination {
     associatedtype PresentationStyle
     static var `default`: Self { get }
     var presentationStyle: PresentationStyle { get }
     var viewController: UIViewController { get }
 }
 
-fileprivate protocol Navigator {
+protocol Navigator {
     associatedtype Destination: NavigatorDestination
     associatedtype PresentationStyle
     func navigate(to destination: Destination,
@@ -114,7 +114,7 @@ class AppNavigator: Navigator {
     func navigate(basedOn url: URL,
                   with presentationStyle: PresentationStyle? = nil,
                   animated: Bool = true) -> UIViewController? {
-        guard url.scheme == "AppNavigatorExample",
+        guard url.scheme?.lowercased() == "AppNavigatorExample".lowercased(),
             let host = url.host,
             let destination = Destination(rawValue: host) else {
                 return nil
@@ -130,7 +130,11 @@ class AppNavigator: Navigator {
     static func navigate(basedOn url: URL, with appDelegate: UIApplicationDelegate) {
         if let navigationController = appDelegate.window??.rootViewController as? UINavigationController {
             let appNavigator = AppNavigator(with: navigationController)
-            appNavigator.navigate(basedOn: url)
+            let viewController = appNavigator.navigate(basedOn: url)
+            
+            if let newsViewController = viewController as? NewsViewController {
+                newsViewController.newsLabelText = "News - Opened from URL"
+            }
         }
     }
 }

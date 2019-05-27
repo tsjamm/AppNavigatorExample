@@ -12,7 +12,8 @@ class LoginViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view.
+        
+        addHomeButton()
         addLabel()
     }
     
@@ -30,6 +31,17 @@ class LoginViewController: UIViewController {
             ])
     }
     
+    private func addHomeButton() {
+        let homeButton = UIBarButtonItem(title: "Home",
+                                            style: UIBarButtonItem.Style.plain,
+                                            target: self,
+                                            action: #selector(openHome))
+        navigationItem.rightBarButtonItem = homeButton
+    }
+    
+    @objc private func openHome() {
+        AppNavigator(with: navigationController).navigate(to: .home)
+    }
 }
 
 
